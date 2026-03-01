@@ -1,1 +1,3 @@
 kurigram
+pymongo
+python-dotenv
