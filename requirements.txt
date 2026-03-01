@@ -2,3 +2,4 @@ kurigram
 aiofiles
 pymongo
 python-dotenv
+requests
