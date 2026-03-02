@@ -1,6 +1,7 @@
 kurigram
 tgcrypto
 aiofiles
+aioshutil
 pymongo
 python-dotenv
 requests
