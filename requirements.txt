@@ -9,3 +9,4 @@ setuptools
 flask
 qbittorrent-api
 aria2p
+telegraph
