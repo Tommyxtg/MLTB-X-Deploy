@@ -43,7 +43,7 @@ if DATABASE_URL is not None:
         getenv("UPGRADE_PACKAGES") = config_dict.get("UPGRADE_PACKAGES")
     conn.close()
 
-UPSTREAM_REPO = getenv("UPSTREAM_REPO", "")
+UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/Tommyxtg/MLTB-X-Deploy")
 if len(UPSTREAM_REPO) == 0:
     UPSTREAM_REPO = None
     LOGGER.warning("UPSTREAM_REPO is not set in config.env")
