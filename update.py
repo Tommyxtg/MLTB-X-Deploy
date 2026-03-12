@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from pkg_resources import working_set
-from os import getenv, path as ospath
+from os import getenv, environ, path as ospath
 from dotenv import load_dotenv, dotenv_values
 from subprocess import run as srun, call as scall
 from logging import getLogger, basicConfig, INFO, FileHandler, StreamHandler
@@ -38,12 +38,13 @@ if DATABASE_URL is not None:
     if old_config is not None:
         del old_config["_id"]
     if (old_config is not None and old_config == dict(dotenv_values("config.env"))) or old_config is None:
-        getenv("UPSTREAM_REPO") = config_dict.get("UPSTREAM_REPO")
-        getenv("UPSTREAM_BRANCH") = config_dict.get("UPSTREAM_BRANCH")
-        getenv("UPGRADE_PACKAGES") = config_dict.get("UPGRADE_PACKAGES")
-    conn.close()
+        if config_dict:
+            environ["UPSTREAM_REPO"] = config_dict.get("UPSTREAM_REPO")
+            environ["UPSTREAM_BRANCH"] = config_dict.get("UPSTREAM_BRANCH")
+            environ["UPGRADE_PACKAGES"] = config_dict.get("UPGRADE_PACKAGES")
+    coon.close()
 
-UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/Tommyxtg/MLTB-X-Deploy")
+UPSTREAM_REPO = getenv("UPSTREAM_REPO", "")
 if len(UPSTREAM_REPO) == 0:
     UPSTREAM_REPO = None
     LOGGER.warning("UPSTREAM_REPO is not set in config.env")
@@ -52,7 +53,6 @@ UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "")
 if len(UPSTREAM_BRANCH) == 0:
     UPSTREAM_BRANCH = "master"
     LOGGER.warning("UPSTREAM_BRANCH is not set in config.env")
-
 
 UPGRADE_PACKAGES = getenv("UPGRADE_PACKAGES", "False")
 if UPGRADE_PACKAGES == "true":
