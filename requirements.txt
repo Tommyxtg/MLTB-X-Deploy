@@ -8,3 +8,7 @@ requests
 flask
 gunicorn
 gevent
+qbittorrentapi
+aiohttp
+aiofiles
+aioshutil
