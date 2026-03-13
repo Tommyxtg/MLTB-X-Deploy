@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from pkg_resources import working_set
-from os import getenv, environ, path as ospath
+from os import environ, path as ospath
 from dotenv import load_dotenv, dotenv_values
 from subprocess import run as srun, call as scall
 from logging import getLogger, basicConfig, INFO, FileHandler, StreamHandler
@@ -18,14 +18,14 @@ LOGGER = getLogger(__name__)
 
 load_dotenv("config.env", override=True)
 
-BOT_TOKEN = getenv("BOT_TOKEN", "")
+BOT_TOKEN = environ.get("BOT_TOKEN", "")
 if len(BOT_TOKEN) == 0:
     LOGGER.error("BOT_TOKEN is not set in config.env")
     exit(1)
 
 bot_id = BOT_TOKEN.split(":")[0]
 
-DATABASE_URL = getenv("DATABASE_URL", "")
+DATABASE_URL = environ.get("DATABASE_URL", "")
 if len(DATABASE_URL) == 0:
     DATABASE_URL = None
     LOGGER.warning("DATABASE_URL is not set in config.env, using local files for configuration and data storage")
@@ -37,24 +37,21 @@ if DATABASE_URL is not None:
     config_dict = db.settings.config.find_one({"_id": bot_id})
     if old_config is not None:
         del old_config["_id"]
-    if (old_config is not None and old_config == dict(dotenv_values("config.env"))) or old_config is None:
-        if config_dict:
-            environ["UPSTREAM_REPO"] = config_dict.get("UPSTREAM_REPO")
-            environ["UPSTREAM_BRANCH"] = config_dict.get("UPSTREAM_BRANCH")
-            environ["UPGRADE_PACKAGES"] = config_dict.get("UPGRADE_PACKAGES")
+    if (old_config is not None and old_config == dict(dotenv_values('config.env')) or old_config is None) and config_dict is not None:
+        environ['UPSTREAM_REPO'] = config_dict['UPSTREAM_REPO']
+        environ['UPSTREAM_BRANCH'] = config_dict['UPSTREAM_BRANCH']
+        environ['UPGRADE_PACKAGES'] = config_dict.get('UPDATE_PACKAGES', 'False')
     coon.close()
 
-UPSTREAM_REPO = getenv("UPSTREAM_REPO", "")
+UPSTREAM_REPO = environ.get("UPSTREAM_REPO", "")
 if len(UPSTREAM_REPO) == 0:
     UPSTREAM_REPO = None
-    LOGGER.warning("UPSTREAM_REPO is not set in config.env")
 
-UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "")
+UPSTREAM_BRANCH = environ.get("UPSTREAM_BRANCH", "")
 if len(UPSTREAM_BRANCH) == 0:
     UPSTREAM_BRANCH = "master"
-    LOGGER.warning("UPSTREAM_BRANCH is not set in config.env")
 
-UPGRADE_PACKAGES = getenv("UPGRADE_PACKAGES", "False")
+UPGRADE_PACKAGES = environ.get("UPGRADE_PACKAGES", "False")
 if UPGRADE_PACKAGES == "true":
     packages = [dist.project_name for dist in working_set]
     scall("pip install " + ' '.join(packages), shell=True)
