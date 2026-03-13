@@ -12,3 +12,4 @@ qbittorrent-api
 aiohttp
 aiofiles
 aioshutil
+aria2p
