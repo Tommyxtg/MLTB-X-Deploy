@@ -13,3 +13,9 @@ aiohttp
 aiofiles
 aioshutil
 aria2p
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+telegraph
+python-magic
+tenacity
