@@ -20,3 +20,4 @@ telegraph
 python-magic
 tenacity
 apscheduler
+psutil
