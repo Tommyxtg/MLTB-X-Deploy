@@ -21,3 +21,4 @@ python-magic
 tenacity
 apscheduler
 psutil
+langcodes[data]
